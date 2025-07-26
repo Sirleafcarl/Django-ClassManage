@@ -1,0 +1,54 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block body %}
+<div class="container d-flex flex-column align-items-center">
+    <!-- Header Section -->
+    <div class="text-center my-5">
+        <h1>
+            <img src="{% static 'images/detail.png' %}" width="60px" class="mb-3">
+            <span style="font-weight: 700; color: #007bff;">DETAIL Page</span>
+        </h1>
+        <p class="text-muted">Discover the details of the selected course below</p>
+    </div>
+
+    <!-- Centered Course Details Section -->
+    <div class="card shadow border-0 text-center" style="max-width: 60%; min-width: 300px;">
+        <div class="card-body">
+            <!-- Course Title -->
+            <div class="mb-4">
+                <h5 class="text-muted">Course Title</h5>
+                <h3 class="font-weight-bold text-primary">{{ course_object.title|upper }}</h3>
+            </div>
+
+            <!-- Course Level -->
+            <div class="mb-4">
+                <h5 class="text-muted">Level</h5>
+                <h4 class="font-weight-bold text-success">{{ course_object.get_level_display }}</h4>
+            </div>
+
+            <!-- Assigned Employees -->
+            <div>
+                <h5 class="text-muted">Assigned Employees</h5>
+                <ul class="list-group list-group-flush text-center">
+                    {% for emp in course_object.employee.all %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span class="font-weight-bold mx-auto">{{ emp.name }}</span>
+                        <span class="badge badge-secondary mx-auto">{{ emp.division }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Centered Action Buttons Section -->
+    <div class="text-center mt-5">
+        <a href="{% url 'course_update' course_object.pk %}" class="btn btn-warning mx-2">
+            <i class="fas fa-edit"></i> Update
+        </a>
+        <a href="{% url 'course_delete' course_object.pk %}" class="btn btn-danger mx-2">
+            <i class="fas fa-trash"></i> Delete
+        </a>
+    </div>
+</div>
+{% endblock %}

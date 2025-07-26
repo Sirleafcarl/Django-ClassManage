@@ -1,0 +1,39 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block body %}
+<div class="container text-center">
+    <h1 class="text-center mt-5"><img src="{% static 'images/list.png' %}" width="50px">LIST Page</h1>
+    <p class="text-muted text-center mb-5">As of {{ today }}</p>
+
+    <!-- Search Bar -->
+    <form class="d-flex justify-content-center mb-3" method="get" action="{% url 'course_list' %}">
+        <input class="form-control me-2" type="search" name="q" placeholder="Search courses" aria-label="Search"
+            value="{{ search_query }}">
+        <button class="btn btn-outline-primary" type="submit">Search</button>
+    </form>
+
+    {% if search_query %}
+    <p class="text-muted">Showing results for: <strong>{{ search_query }}</strong></p>
+    {% endif %}
+
+    <!-- Sorting Buttons -->
+    <div class="mb-3">
+        <a href="{% url 'course_list' %}?q={{ search_query }}&sort=asc"
+            class="btn btn-outline-secondary me-2">Ascending</a>
+        <a href="{% url 'course_list' %}?q={{ search_query }}&sort=desc"
+            class="btn btn-outline-secondary">Descending</a>
+    </div>
+
+    <!-- Course List -->
+    {% for course in object_list %}
+    <div class="card m-1 d-inline-flex" style="width: 18rem;height:10rem;">
+        <div class="card-body">
+            <h5 class="card-title h-50">{{ course.title|upper }}</h5>
+            <p class="card-text">{{ course.get_level_display }}</p>
+            <a href="{% url 'course_detail' course.pk %}" class="btn btn-primary p-0 d-block w-50 mx-auto"
+                style="height:1.2rem; font-size:0.8rem">Go Detail</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
